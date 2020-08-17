@@ -476,5 +476,8 @@ export default {
         });
     },
   },
+   mounted() {
+    this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
+  },
 };
 </script>

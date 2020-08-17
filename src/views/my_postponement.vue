@@ -60,11 +60,11 @@
               gjfhhf fjk hjhjdf vhjvnknv vjhjvkv vjhjvb vjv
             </div>
             <div class="comment">
-              <form action>
+              <!-- <form action>
                 <textarea name="comment" id="comment" cols="20" rows="5"></textarea>
                 <br />
                 <input type="submit" value="Send" />
-              </form>
+              </form> -->
             </div>
           </div>
           <div class="col-md-4">
@@ -96,10 +96,18 @@
               gjfhhf fjk hjhjdf vhjvnknv vjhjvkv vjhjvb vjv
             </div>
             <div class="comment">
-              <form action>
-                <textarea name="comment" id="comment" cols="20" rows="5"></textarea>
+              <form>
+                <input type="text"  id="user_id"  v-model="form.user_id" hidden required />
+                <input type="text" id="commentable_type"  v-model="form.commentable_type" required />
+                <input type="text" id="commentable_id"  v-model="form.commentable_id" required />
+                <textarea v-model="form.body" id="body" cols="20" rows="5" required></textarea>
                 <br />
-                <input type="submit" value="Send" />
+                <input
+                  type="submit"
+                  @click="sendComment()"
+                  value="Send"
+                  class="btn btn-default btn-primary"
+                />
               </form>
             </div>
           </div>
@@ -129,11 +137,11 @@
               gjfhhf fjk hjhjdf vhjvnknv vjhjvkv vjhjvb vjv
             </div>
             <div class="comment">
-              <form action>
+              <!-- <form action>
                 <textarea name="comment" id="comment" cols="20" rows="5"></textarea>
                 <br />
                 <input type="submit" value="Send" />
-              </form>
+              </form> -->
             </div>
           </div>
         </div>
@@ -216,5 +224,41 @@
 }
 </style>
 <script>
-export default {};
+import { ApiService } from "@/services/api.service.js";
+
+export default {
+  mounted() {
+    this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
+  },
+  methods:{
+sendComment() {
+    const fd = new FormData();
+    fd.append("user_id", this.form.user_id);
+    fd.append("body", this.form.body);
+    fd.append("commentable_type", this.form.commentable_type);
+    fd.append("commentable_id", this.form.commentable_id);
+    ApiService.post(`comment/${this.thisUser.id}`, fd)
+      .then((response) => {
+        console.log(response.data);
+        alert("Comment sent successfully");
+        location.reload();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  },
+  },
+
+  data() {
+    return {
+      form: {
+        user_id: "",
+        body: "",
+        commentable_type: "",
+        commentable_id: "",
+      },
+      error: false,
+    };
+  },
+};
 </script>

@@ -16,12 +16,7 @@
         <!-- FORM -->
         <form>
           <div>
-            <select
-              required
-              name="postponement-type"
-              class="dropdown-select"
-              v-model="form.postponable_type"
-            >
+            <select required class="dropdown-select" v-model="form.postponable_type">
               <option value="Exam Postponement">Exam Postponement</option>
               <option value="Semester Postponement">Semester Postponement</option>
               <option value="Year Postponement">Year Postponement</option>
@@ -31,7 +26,7 @@
           <h5>Check Sample Postponement Letter For:</h5>
           <div class="sample-letters">
             <div class="attachements bg-light">
-              <!-- <form action="./ASSIGNMENT 02.pdf" target="_blank">
+              <form action="./ASSIGNMENT 02.pdf" target="_blank">
                 <button class="btn btn-primary at" type="submit">Attachement 1</button>
               </form>
               <form action="./ASSIGNMENT 02.pdf" target="_blank">
@@ -39,7 +34,7 @@
               </form>
               <form action="./ASSIGNMENT 02.pdf" target="_blank">
                 <button class="btn btn-primary at" type="submit">Attachement 3</button>
-              </form> -->
+              </form>
             </div>
           </div>
 
@@ -52,8 +47,9 @@
               >.......................................................................</b>
             </h4>
           </label>
+          <input type="text" id="user_id" name="user_id" v-model="form.user_id" required hidden />
           <div class="file-input">
-            <input type="file" id="inserted-file" v-on:change="attach()" required />
+            <input type="file" id="inserted-file" v-on:change="attach()" required multiple />
           </div>
           <br />
           <div class="submit-div">
@@ -148,6 +144,9 @@ hr {
 import { ApiService } from "@/services/api.service.js";
 
 export default {
+  mounted() {
+    this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
+  },
   methods: {
     openMyPostponement() {
       this.$router.push({ path: "my_postponement" });
@@ -156,27 +155,30 @@ export default {
       this.$router.push({ path: "all_postponements" });
     },
     attach() {
-      this.attachement =  document.querySelector("#inserted-file").files[0];
+      this.form.attachement = document.querySelector("#inserted-file").files[0];
     },
     postpone() {
+      console.log(this.form.attachement);
       const fd = new FormData();
+      fd.append("user_id", this.form.user_id);
       fd.append("attachement", this.form.attachement);
       fd.append("postponable_type", this.form.postponable_type);
-      ApiService.post("/postponement", fd)
+      ApiService.post(`postponement/${this.thisUser.id}`, fd)
         .then((response) => {
           console.log(response.data);
+          alert("Postponement submitted successfully");
+          location.reload();
         })
         .catch((e) => {
           console.log(e);
         });
     },
   },
-  components: {
-    // pdf
-  },
+  
   data() {
     return {
       form: {
+        user_id: "",
         attachement: "",
         postponable_type: "",
       },
