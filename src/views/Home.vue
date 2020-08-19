@@ -2,10 +2,10 @@
   <div>
     <div id="home">
       <div class="main-content">
-        <h3>
-          <b>Welcome </b>
+        <h4>
+          <b>Welcome {{thisUser.first_name}} {{thisUser.middle_name}} {{thisUser.surname}}</b>
           <hr noshade />
-        </h3>
+        </h4>
 
         <p class="homeDescription">
           You have successfully login to the Coursework Assessment and Postponement System
@@ -54,29 +54,34 @@ hr {
 
 
 <script>
-const api = "http://127.0.0.1:8000/api/users";
+const userApi = "http://127.0.0.1:8000/api/users";
 import axios from "axios";
 import User from "@/models/user.js";
 export default {
   computed: {
-    allUsers() {
-      return User.all()
-    }
+    // allUsers() {
+    //   return User.all();
+    // },
   },
   data() {
     return {
-      users: []
-    }
+      thisUser: "",
+    };
   },
   mounted() {
-    axios.get(api).then((response) => {
-      console.log(response.data);
+    this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
+
+    axios.get(userApi).then((re) => {
+      console.log(re.data);
       User.insert({
-        data: response.data.users,
+        data: re.data.users,
       });
-      this.users = response.data.users
+      this.users = re.data.users;
     });
+    // this.users.forEach(user => {
+    //   console.log(user)
+
+    // });
   },
-  
 };
 </script>

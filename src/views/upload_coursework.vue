@@ -2,7 +2,16 @@
   <div>
     <div id="coursework">
       <div class="main-content">
-        <h3>Upload Coursework According to the Mode of Assessment you Wish to Use</h3>
+        <div>
+          <h3>
+            <b>{{thisCourse.code}}: {{thisCourse.title}}</b>
+          </h3>
+        </div>
+        <hr />
+
+        <br />
+
+        <h4>Upload Coursework According to the Mode of Assessment you Wish to Use</h4>
 
         <div class="sample-letters">
           <div class="sample-section">
@@ -41,6 +50,7 @@
           </div>
         </div>
         <br />
+
         <!-- ADD TEST MODAL -->
         <div class="modal fade" id="testModal" role="dialog">
           <div class="modal-dialog modal-sm">
@@ -51,15 +61,21 @@
                   <i class="fas fa-plus"></i> Add Test
                 </h4>
               </div>
-              <form method="POST" action>
+              <form>
                 <div class="form-group">
                   <div class="modal-body">
-                    <input type="number" name="title" class="input-decoration" required hidden />
+                    <input
+                      v-model="form.course_id"
+                      type="text"
+                      class="input-decoration"
+                      required
+                      hidden
+                    />
                     <br />
                     <label>Title:</label>
                     <input
                       type="text"
-                      name="title"
+                      v-model="form.title"
                       placeholder="Eg; Test 01"
                       class="input-decoration"
                       required
@@ -69,8 +85,8 @@
                     <br />
                     <label>Total Marks:</label>
                     <input
+                      v-model="form.total_marks"
                       type="number"
-                      name="total"
                       class="input-decoration"
                       required
                       autocomplete="total"
@@ -79,15 +95,226 @@
                     <label>Test Weight:</label>
                     <input
                       type="number"
-                      name="weight"
+                      v-model="form.weight"
                       class="input-decoration"
                       required
                       autocomplete="weight"
                     />
                   </div>
-
                   <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary submit-button" value="Add" />
+                    <input
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                      value="Add"
+                      @click="addTest"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-danger clear-button"
+                      data-dismiss="modal"
+                    >Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD QUIZ MODAL -->
+        <div class="modal fade" id="quizModal" role="dialog">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                  <i class="fas fa-plus"></i> Add Quiz
+                </h4>
+              </div>
+              <form>
+                <div class="form-group">
+                  <div class="modal-body">
+                    <input
+                      v-model="form.course_id"
+                      type="text"
+                      class="input-decoration"
+                      required
+                      hidden
+                    />
+                    <br />
+                    <label>Title:</label>
+                    <input
+                      type="text"
+                      v-model="form.title"
+                      placeholder="Eg; Quiz 01"
+                      class="input-decoration"
+                      required
+                      autocomplete="title"
+                      autofocus
+                    />
+                    <br />
+                    <label>Total Marks:</label>
+                    <input
+                      v-model="form.total_marks"
+                      type="number"
+                      class="input-decoration"
+                      required
+                      autocomplete="total"
+                    />
+                    <br />
+                    <label>Quiz Weight:</label>
+                    <input
+                      type="number"
+                      v-model="form.weight"
+                      class="input-decoration"
+                      required
+                      autocomplete="weight"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <input
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                      value="Add"
+                      @click="addQuiz"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-danger clear-button"
+                      data-dismiss="modal"
+                    >Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD ASSIGNMENT MODAL -->
+        <div class="modal fade" id="assignmentModal" role="dialog">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                  <i class="fas fa-plus"></i> Add Assignment
+                </h4>
+              </div>
+              <form>
+                <div class="form-group">
+                  <div class="modal-body">
+                    <input
+                      v-model="form.course_id"
+                      type="text"
+                      class="input-decoration"
+                      required
+                      hidden
+                    />
+                    <br />
+                    <label>Title:</label>
+                    <input
+                      type="text"
+                      v-model="form.title"
+                      placeholder="Eg; Assignment 01"
+                      class="input-decoration"
+                      required
+                      autocomplete="title"
+                      autofocus
+                    />
+                    <br />
+                    <label>Total Marks:</label>
+                    <input
+                      v-model="form.total_marks"
+                      type="number"
+                      class="input-decoration"
+                      required
+                      autocomplete="total"
+                    />
+                    <br />
+                    <label>Assignment Weight:</label>
+                    <input
+                      type="number"
+                      v-model="form.weight"
+                      class="input-decoration"
+                      required
+                      autocomplete="weight"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <input
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                      value="Add"
+                      @click="addAssignment"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-danger clear-button"
+                      data-dismiss="modal"
+                    >Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD PRACTICAL MODAL -->
+        <div class="modal fade" id="practicalModal" role="dialog">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                  <i class="fas fa-plus"></i> Add Practical
+                </h4>
+              </div>
+              <form>
+                <div class="form-group">
+                  <div class="modal-body">
+                    <input
+                      v-model="form.course_id"
+                      type="text"
+                      class="input-decoration"
+                      required
+                      hidden
+                    />
+                    <br />
+                    <label>Title:</label>
+                    <input
+                      type="text"
+                      v-model="form.title"
+                      placeholder="Eg; Practical 01"
+                      class="input-decoration"
+                      required
+                      autocomplete="title"
+                      autofocus
+                    />
+                    <br />
+                    <label>Total Marks:</label>
+                    <input
+                      v-model="form.total_marks"
+                      type="number"
+                      class="input-decoration"
+                      required
+                      autocomplete="total"
+                    />
+                    <br />
+                    <label>Practical Weight:</label>
+                    <input
+                      type="number"
+                      v-model="form.weight"
+                      class="input-decoration"
+                      required
+                      autocomplete="weight"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <input
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                      value="Add"
+                      @click="addPractical"
+                    />
                     <button
                       type="button"
                       class="btn btn-danger clear-button"
@@ -112,88 +339,67 @@
             </tr>
           </thead>
           <tbody>
-            <!-- @foreach ($postponements as $index => $postponement) -->
             <tr>
               <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Test 02</a>
+                <div v-for="(test, i) in thisCourse.tests" :key="i">
+                  <button
+                    @click.prevent="addTestToModal(test.id)"
+                    class="btn btn-primary btn-sm btn-outline"
+                    data-toggle="modal"
+                    data-target="#scoresModal"
+                    style="margin-top:10px; margin-bottom:10px; text-align:center"
+                  >
+                    <b>{{test.title}}</b>
+                  </button>
+                </div>
               </td>
               <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Quiz 02</a>
+                <div v-for="(quiz, i) in thisCourse.quizzes" :key="i">
+                  <a
+                    href="#"
+                    class="btn btn-primary btn-sm btn-outline"
+                    data-toggle="modal"
+                    data-target="#scoresModal"
+                    style="margin-top:10px; margin-bottom:10px; text-align:center"
+                  >
+                    <b>{{quiz.title}}</b>
+                  </a>
+                </div>
               </td>
               <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Assignment 02</a>
+                <div v-for="(assignment, i) in thisCourse.assignments" :key="i">
+                  <a
+                    href="#"
+                    class="btn btn-primary btn-sm btn-outline"
+                    data-toggle="modal"
+                    data-target="#scoresModal"
+                    style="margin-top:10px; margin-bottom:10px; text-align:center"
+                  >
+                    <b>{{assignment.title}}</b>
+                  </a>
+                </div>
               </td>
               <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Practical 02</a>
+                <div v-for="(practical, i) in thisCourse.practicals" :key="i">
+                  <a
+                    href="#"
+                    class="btn btn-primary btn-sm btn-outline"
+                    data-toggle="modal"
+                    data-target="#scoresModal"
+                    style="margin-top:10px; margin-bottom:10px; text-align:center"
+                  >
+                    <b>{{practical.title}}</b>
+                  </a>
+                </div>
               </td>
             </tr>
-            <tr>
-              <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Test 01</a>
-              </td>
-              <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Quiz 01</a>
-              </td>
-              <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Assignment 02</a>
-              </td>
-              <td>
-                <a
-                  href="#"
-                  class="btn btn-primary btn-sm btn-outline"
-                  data-toggle="modal"
-                  data-target="#scoresModal"
-                  style="margin-top:10px; margin-bottom:10px; text-align:center"
-                >Practical 02</a>
-              </td>
-            </tr>
-
-            <!-- @endforeach -->
           </tbody>
         </table>
+
+        <!-- MODALS -->
+
         <!-- ADD SCORES MODAL -->
+
         <div class="modal fade" id="scoresModal" role="dialog">
           <div class="modal-dialog modal-md">
             <div class="modal-content">
@@ -203,23 +409,31 @@
                   <i class="fas fa-plus"></i> Upload Scores
                 </h4>
               </div>
-              <form action>
-                <div class="modal-body">
-                  <h4>Insert .xml file to upload scores</h4>
-                </div>
-                <div class="file-input">
-                  <input
-                    type="file"
-                    class="form-control"
-                    :class="{ ' is-invalid' : error.message }"
-                    id="input-file-import"
-                    name="file_import"
-                    ref="import_file"
-                    @change="onFileChange"
-                  />
+              <form>
+                <div class="form-group">
+                  <div class="modal-body">
+                    <h4>Insert .xls or .xlsx file to upload scores</h4>
+                  </div>
+                  <div class="file-input">
+                    <input
+                      type="file"
+                      class="form-control"
+                      :class="{ ' is-invalid' : error.message }"
+                      id="input-file-import"
+                      name="file_import"
+                      ref="import_file"
+                      @change="onFileChange"
+                      required
+                    />
+                  </div>
                   <div v-if="error.message" class="invalid-feedback"></div>
+
                   <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary submit-button" value="Upload" />
+                    <button
+                      @click.prevent="proceedAction()"
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                    >Upload</button>
                     <button
                       type="button"
                       class="btn btn-danger clear-button"
@@ -231,36 +445,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="modal fade" id="scoresModal" role="dialog">
-          <div class="modal-dialog modal-md">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4>
-                  <i class="fas fa-plus"></i> Upload Scores
-                </h4>
-              </div>
-              <form action>
-                <div class="form-group">
-                  <div class="modal-body">
-                    <h4>Insert .xml file to upload scores</h4>
-                  </div>
-                  <div class="file-input">
-                    <input type="file" id="inserted-file" />
-                  </div>
-                  <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary submit-button" value="Upload" />
-                    <button
-                      type="button"
-                      class="btn btn-danger clear-button"
-                      data-dismiss="modal"
-                    >Clear</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>-->
         <button
           type="button"
           class="btn btn-primary clear-button"
@@ -294,51 +478,6 @@
           </tr>
           <tr>
             <td>2</td>
-            <td>2017-04-07374</td>
-            <td>12</td>
-            <td>5</td>
-            <td>5</td>
-            <td>5</td>
-            <td>27</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>2017-04-07374</td>
-            <td>12</td>
-            <td>5</td>
-            <td>5</td>
-            <td>5</td>
-            <td>27</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>2017-04-07374</td>
-            <td>12</td>
-            <td>5</td>
-            <td>5</td>
-            <td>5</td>
-            <td>27</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>2017-04-07374</td>
-            <td>12</td>
-            <td>5</td>
-            <td>5</td>
-            <td>5</td>
-            <td>27</td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>2017-04-07374</td>
-            <td>12</td>
-            <td>5</td>
-            <td>5</td>
-            <td>5</td>
-            <td>27</td>
-          </tr>
-          <tr>
-            <td>7</td>
             <td>2017-04-07374</td>
             <td>12</td>
             <td>5</td>
@@ -440,44 +579,118 @@ th {
 
 
 <script>
-// import { ApiService } from "@/services/api.service.js";
-import axios from "axios";
+import { ApiService } from "@/services/api.service.js";
+// import axios from "axios";
+import router from "../router/index";
 
 export default {
   data() {
     return {
       error: {},
-      import_file: "",
+
+      thisCourse: {},
+      form: {
+        title: "",
+        weight: null,
+        total_marks: null,
+        import_file: "",
+      },
+      testId: null,
     };
   },
   methods: {
     onFileChange(e) {
       this.import_file = e.target.files[0];
+      console.log(this.import_file);
+    },
+    addTestToModal(selectedId) {
+      this.testId = selectedId;
+      console.log(selectedId);
+    },
+    proceedAction() {
+      const fd = new FormData();
+      console.log(this.testId);
+      fd.append("import_file", this.form.import_file);
+      ApiService.post(`testScore/${this.testId}`, fd)
+        .then((response) => {
+          console.log(response.data);
+          alert("Scores uploaded successfully");
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
 
-    proceedAction() {
-      let formData = new FormData();
-      formData.append("import_file", this.import_file);
-
-      axios
-        .post("/scores/import", formData, {
-          headers: { "content-type": "multipart/form-data" },
-        })
+    addTest() {
+      const fd = new FormData();
+      fd.append("title", this.form.title);
+      fd.append("total_marks", this.form.total_marks);
+      fd.append("weight", this.form.weight);
+      console.log(this.testId);
+      ApiService.post(`test/${this.thisCourse.id}`, fd)
         .then((response) => {
-          if (response.status === 200) {
-            console.log("Successfully uploaded");
-          }
+          console.log(response.data);
+          alert("Test added successfully");
+          location.reload();
         })
-        .catch((error) => {
-          console.log("Upload not valid");
-          this.uploading = false;
-          this.error = error.response.data;
-          console.log("check error: ", this.error);
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    addQuiz() {
+      const fd = new FormData();
+      fd.append("title", this.form.title);
+      fd.append("total_marks", this.form.total_marks);
+      fd.append("weight", this.form.weight);
+      ApiService.post(`quiz/${this.thisCourse.id}`, fd)
+        .then((response) => {
+          console.log(response.data);
+          alert("Quiz added successfully");
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    addAssignment() {
+      const fd = new FormData();
+      fd.append("title", this.form.title);
+      fd.append("total_marks", this.form.total_marks);
+      fd.append("weight", this.form.weight);
+      ApiService.post(`assignment/${this.thisCourse.id}`, fd)
+        .then((response) => {
+          console.log(response.data);
+          alert("Assignment added successfully");
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    addPractical() {
+      const fd = new FormData();
+      fd.append("title", this.form.title);
+      fd.append("total_marks", this.form.total_marks);
+      fd.append("weight", this.form.weight);
+      ApiService.post(`practical/${this.thisCourse.id}`, fd)
+        .then((response) => {
+          console.log(response.data);
+          alert("Practical added successfully");
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
   },
-   mounted() {
+  mounted() {
     this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
+
+    const { course } = router.currentRoute.params;
+    this.thisCourse = course;
+
+    console.log(this.thisCourse);
   },
 };
 </script>

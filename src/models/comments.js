@@ -8,6 +8,7 @@ export default class Comment extends Model {
             id: this.attr(null),
             body: this.attr(''),
             user_id: this.attr(null),
+            postponement_id: this.attr(null),
 
         }
     }

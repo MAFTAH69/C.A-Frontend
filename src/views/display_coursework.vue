@@ -1,25 +1,44 @@
 <template>
   <div>
     <div id="coursework">
-      <div class="main-content">
-        <h4>Your Coursework Assessment For IS 352: Computer Networks:</h4>
+      <div class>
+        <h4>
+          Your Coursework Assessment For
+          <b>{{thisCourse.code}}: {{thisCourse.title}}</b>
+        </h4>
         <br />
         <table class="table">
           <tr>
-            <th>Test 1</th>
-            <th>Test 2</th>
-            <th>Quiz</th>
-            <th>Assignments</th>
-            <th>Course work</th>
+            <th v-for="(test, i) in thisCourse.tests" :key="i">
+              {{test.title}}/
+              <span>{{test.weight}}</span>
+            </th>
+            <th v-for="(quiz, i) in thisCourse.quizzes" :key="i">
+              {{quiz.title}}/
+              <span>{{quiz.weight}}</span>
+            </th>
+            <th v-for="(assignment, i) in thisCourse.assignments" :key="i">
+              {{assignment.title}}/
+              <span>{{assignment.weight}}</span>
+            </th>
+            <th v-for="(practical, i) in thisCourse.practicals" :key="i">
+              {{practical.title}}/
+              <span>{{practical.weight}}</span>
+            </th>
+            <th>
+              Coursework/
+              <span>40</span>
+            </th>
+            <th>Remark</th>
           </tr>
-          <tr>
-            <td>08</td>
-            <td>07</td>
+          <tr v-for="(test, index) in thisUser.tests" :key="index">
+            <td >het {{test}}</td> 
+             <td>07</td>
             <td>03</td>
-            <td>06</td>
-            <td>24</td>
-          </tr>
-        </table>
+            <td>06</td> 
+           <td></td> 
+           </tr> 
+          </table> 
       </div>
     </div>
     <div class="footer">
@@ -35,9 +54,7 @@
   padding: 10px;
   display: flex;
 }
-/* .main-content { */
-/* flex: 0 0 60%; */
-/* } */
+
 .footer {
   text-align: center;
   color: gray;
@@ -56,25 +73,43 @@ hr {
   border-collapse: collapse;
   text-align: center;
 }
-
+span {
+  font-size: 18px;
+  color: rgb(13, 125, 204);
+}
 tr,
 td,
 th {
   border: 1px solid #333;
+  padding: 5px;
+  font-size: 18px;
 }
 </style>
 
 
-// <script>
-// import Vue from "vue";
-// export default Vue.extend({
-
-  
-// });
-// </script>
 
 <script>
+import router from "../router/index";
+
 export default {
-  
-}
+  data() {
+    return {
+      thisCourse: {},
+      newCourse:{}
+    };
+  },
+
+  mounted() {
+    this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
+
+    const { course } = router.currentRoute.params;
+    this.thisCourse = course;
+
+    console.log(this.thisCourse.tests[0].scores);
+
+    // this.thisCourse.test
+    // if(this.newCourse.id==this.thisCourse.id)
+    // console.log('ni kweli')
+  },
+};
 </script>

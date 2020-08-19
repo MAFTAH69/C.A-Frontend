@@ -2,11 +2,6 @@
   <div>
     <div id="postponement">
       <div class="main-content">
-        <!-- For User HOD/DVC/DOU/Principle -->
-        <div class="first-btn">
-          <button class="btn btn-sm btn-primary" @click="openAllPostponements()">All Postponement</button>
-        </div>
-
         <!-- For User Student -->
         <div class="first-btn">
           <button class="btn btn-sm btn-primary" @click="openMyPostponement()">My Postponement</button>
@@ -47,7 +42,7 @@
               >.......................................................................</b>
             </h4>
           </label>
-          <input type="text" id="user_id" name="user_id" v-model="form.user_id" required hidden />
+          <input type="text" id="user_id" v-model="form.user_id" required hidden />
           <div class="file-input">
             <input type="file" id="inserted-file" v-on:change="attach()" required multiple />
           </div>
@@ -151,9 +146,7 @@ export default {
     openMyPostponement() {
       this.$router.push({ path: "my_postponement" });
     },
-    openAllPostponements() {
-      this.$router.push({ path: "all_postponements" });
-    },
+
     attach() {
       this.form.attachement = document.querySelector("#inserted-file").files[0];
     },
@@ -174,7 +167,7 @@ export default {
         });
     },
   },
-  
+
   data() {
     return {
       form: {

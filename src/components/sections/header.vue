@@ -8,12 +8,12 @@
       </h1>
     </div>
     <div class="mini-header">
-      <div><i>Academic Year: </i>
-      <b> {{first_header_variable}}</b></div>
+      <div>
+        <i>Academic Year:</i>
+        <b>{{first_header_variable}}</b>
+      </div>
 
-      <b
-        style="text-align:center"
-      >{{thisUser.surname}} {{thisUser.first_name}} {{thisUser.middle_name}}</b>
+      <b style="font-size:13px">{{thisUser.surname}} {{thisUser.first_name}} {{thisUser.middle_name}} {{thisUser.reg_number}}</b>
     </div>
   </div>
 </template>
@@ -58,8 +58,8 @@ h1 {
 export default {
   data() {
     return {
-      first_header_variable: "2019/2020",
       thisUser: "",
+      first_header_variable: "2019/2020",
     };
   },
   mounted() {

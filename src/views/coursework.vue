@@ -6,34 +6,11 @@
           <b>Select Course</b>
         </h3>
 
-        <div v-for="(course, index) in userCourses.courses" :key="index">
-          {{ course.title }}
+        <div v-for="(course, index) in thisUser.courses" :key="index">
+          <button class="btn btn-outline btn-lg" @click="viewCoursework(course)">{{ course.title }}</button>
+          <br />
+          <br />
         </div>
-
-        <button class="btn btn-outline btn-lg" @click="viewCoursework()">{{}}</button>
-        <br />
-        <br />
-        <button
-          class="btn btn-outline btn-lg"
-          @click="viewCoursework()"
-        >IS 322: Introduction to Object Oriented Programming</button>
-        <br />
-        <br />
-        <button
-          class="btn btn-outline btn-lg"
-          @click="viewCoursework()"
-        >IS 252: Managemebt of Software Project</button>
-        <br />
-        <br />
-        <button class="btn btn-outline btn-lg" @click="viewCoursework()">IS 318: Database Management</button>
-        <br />
-        <br />
-        <button
-          class="btn btn-outline btn-lg"
-          @click="viewCoursework()"
-        >CS 385: Artificial Intelligence</button>
-        <br />
-        <br />
       </div>
     </div>
     <div class="footer">
@@ -64,41 +41,45 @@ hr {
 </style>
 
 <script>
-import { ApiService } from '@/services/api.service.js'
-import User from '@/models/user.js'
-import Course from '@/models/course.js'
+
 export default {
+  data() {
+      return {
+        first_header_variable: "",
+        thisUser: "",
+        userId: null,
+        userRole: "",
+        // test: "",
+      };
+    },
   methods: {
-    viewCoursework() {
-      this.$router.push({ path: "upload_coursework" });
+    
+    viewCoursework(specificCourse) {
+      console.log(specificCourse)
+      if (this.userRole.name == "Student") {
+        this.$router.push({ name: "DisplayCoursework",params: {course: specificCourse}});
+      } else {
+        this.$router.push({ name: "UploadCoursework" ,params: {course: specificCourse}});
+      }
     },
   },
-  data() {
-    return {
-      first_header_variable: "",
-      thisUser: "",
-      userId: null
-    };
-  },
+
   mounted() {
     this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
 
-    this.userId = this.thisUser.id;
+    // this.userId = this.thisUser.id;
 
-    try {
-      ApiService.get('courses').then(res => { 
-        Course.insert({ data: res.data.courses })
-       });
-    } catch (error) {
-      console.log(error)
-    }
+    this.thisUser.courses.forEach((course) => {
+      console.log(course.title);
+    });
 
+    this.thisUser.roles.forEach((role) => {
+      this.userRole=role;
+      // console.log();
+    });
   },
   computed: {
-    userCourses() {
-      console.log(User.query().where('id', 3).with('courses').get())
-      return User.query().with('courses').where('id', 1).get()[0]
-    }
-  }
+ 
+  },
 };
 </script>
