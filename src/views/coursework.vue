@@ -41,7 +41,8 @@ hr {
 </style>
 
 <script>
-
+// import axios from "axios";
+// import User from "@/models/user.js";
 export default {
   data() {
       return {
@@ -72,6 +73,7 @@ export default {
     this.thisUser.courses.forEach((course) => {
       console.log(course.title);
     });
+    
 
     this.thisUser.roles.forEach((role) => {
       this.userRole=role;

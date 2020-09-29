@@ -10,7 +10,7 @@ import RoleUser from '@/models/role_user.js'
 // import Coursework from '@/models/coursework.js'
 // import Quiz from '@/models/quiz.js'
 // import Test from '@/models/test.js'
-// import Score from '@/models/score.js'
+import Score from '@/models/score.js'
 // import Assignment from '@/models/assignment.js'
 // import Practical from '@/models/practical.js'
 import CourseUser from '@/models/course_user.js'
@@ -31,7 +31,7 @@ database.register(RoleUser)
 // database.register(Coursework)
 // database.register(Quiz)
 // database.register(Test)
-// database.register(Score)
+database.register(Score)
 // database.register(Assignment)
 // database.register(Practical)
 database.register(Postponement)

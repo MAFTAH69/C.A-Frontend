@@ -30,7 +30,7 @@
                 <td>Waiting</td>
 
                 <td>
-                  <a @click="openIndividualPostponement()" class="btn btn-outline-primary">
+                  <a @click="openIndividualPostponement(postponement)" class="btn btn-outline-primary">
                     <i class="fas fa-info-circle">View</i>
                   </a>
                 </td>
@@ -71,8 +71,11 @@ import User from "@/models/user.js";
 
 export default {
   methods: {
-    openIndividualPostponement() {
-      this.$router.push({ path: "my_postponement" });
+    openIndividualPostponement(specificPostponement) {
+      this.$router.push({
+          name: "IndividualPostponement",
+          params: { postponement: specificPostponement },
+        });
     },
   },
 

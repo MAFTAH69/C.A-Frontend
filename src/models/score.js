@@ -8,7 +8,7 @@ export default class Score extends Model {
             
             id: this.attr(null),
             scored_marks: this.attr(null),
-            user_id: this.attr(null),
+            reg_number: this.attr(null),
             scorable_id: this.attr(null),
             scorable_type: this.attr(''),
       

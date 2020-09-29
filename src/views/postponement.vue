@@ -150,6 +150,7 @@ export default {
     attach() {
       this.form.attachement = document.querySelector("#inserted-file").files[0];
     },
+    
     postpone() {
       console.log(this.form.attachement);
       const fd = new FormData();

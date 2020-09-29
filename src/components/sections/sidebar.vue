@@ -10,7 +10,7 @@
         <input @click="goToCoursework()" class="nav-link" type="submit" value="Coursework" />
       </div>
       <div
-        v-if="hasAccess(['Student', 'Instructor','Principle','DVC Academic','Director of Undergraduate Studies','Head of Department'])"
+        v-if="hasAccess(['Student', 'Principle','DVC Academic','Director of Undergraduate Studies','Head of Department'])"
         class="sidebar-links"
       >
         <input @click="goToPostponement()" class="nav-link" type="submit" value="Postponement" />
@@ -92,7 +92,7 @@ export default {
   mounted() {
     this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
     this.thisUser.roles.forEach((role) => {
-      this.userRole=role;
+      this.userRole = role;
       console.log(this.userRole);
     });
   },

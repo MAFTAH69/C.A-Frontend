@@ -54,15 +54,9 @@ hr {
 
 
 <script>
-const userApi = "http://127.0.0.1:8000/api/users";
-import axios from "axios";
-import User from "@/models/user.js";
+// import axios from "axios";
 export default {
-  computed: {
-    // allUsers() {
-    //   return User.all();
-    // },
-  },
+  computed: {},
   data() {
     return {
       thisUser: "",
@@ -70,18 +64,6 @@ export default {
   },
   mounted() {
     this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
-
-    axios.get(userApi).then((re) => {
-      console.log(re.data);
-      User.insert({
-        data: re.data.users,
-      });
-      this.users = re.data.users;
-    });
-    // this.users.forEach(user => {
-    //   console.log(user)
-
-    // });
   },
 };
 </script>

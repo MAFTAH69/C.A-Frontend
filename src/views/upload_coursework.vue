@@ -343,10 +343,10 @@
               <td>
                 <div v-for="(test, i) in thisCourse.tests" :key="i">
                   <button
-                    @click.prevent="addTestToModal(test.id)"
+                    @click.prevent="addToModal(test.id)"
                     class="btn btn-primary btn-sm btn-outline"
                     data-toggle="modal"
-                    data-target="#scoresModal"
+                    data-target="#testScoresModal"
                     style="margin-top:10px; margin-bottom:10px; text-align:center"
                   >
                     <b>{{test.title}}</b>
@@ -355,41 +355,41 @@
               </td>
               <td>
                 <div v-for="(quiz, i) in thisCourse.quizzes" :key="i">
-                  <a
-                    href="#"
+                  <button
+                    @click.prevent="addToModal(quiz.id)"
                     class="btn btn-primary btn-sm btn-outline"
                     data-toggle="modal"
-                    data-target="#scoresModal"
+                    data-target="#quizScoresModal"
                     style="margin-top:10px; margin-bottom:10px; text-align:center"
                   >
                     <b>{{quiz.title}}</b>
-                  </a>
+                  </button>
                 </div>
               </td>
               <td>
                 <div v-for="(assignment, i) in thisCourse.assignments" :key="i">
-                  <a
-                    href="#"
+                  <button
+                    @click.prevent="addToModal(assignment.id)"
                     class="btn btn-primary btn-sm btn-outline"
                     data-toggle="modal"
-                    data-target="#scoresModal"
+                    data-target="#assignmentScoresModal"
                     style="margin-top:10px; margin-bottom:10px; text-align:center"
                   >
                     <b>{{assignment.title}}</b>
-                  </a>
+                  </button>
                 </div>
               </td>
               <td>
                 <div v-for="(practical, i) in thisCourse.practicals" :key="i">
-                  <a
-                    href="#"
+                  <button
+                    @click="addToModal(practical.id)"
                     class="btn btn-primary btn-sm btn-outline"
                     data-toggle="modal"
-                    data-target="#scoresModal"
+                    data-target="#practicalScoresModal"
                     style="margin-top:10px; margin-bottom:10px; text-align:center"
                   >
                     <b>{{practical.title}}</b>
-                  </a>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -400,7 +400,7 @@
 
         <!-- ADD SCORES MODAL -->
 
-        <div class="modal fade" id="scoresModal" role="dialog">
+        <div class="modal fade" id="testScoresModal" role="dialog">
           <div class="modal-dialog modal-md">
             <div class="modal-content">
               <div class="modal-header">
@@ -416,6 +416,7 @@
                   </div>
                   <div class="file-input">
                     <input
+                      required
                       type="file"
                       class="form-control"
                       :class="{ ' is-invalid' : error.message }"
@@ -423,14 +424,13 @@
                       name="file_import"
                       ref="import_file"
                       @change="onFileChange"
-                      required
                     />
                   </div>
                   <div v-if="error.message" class="invalid-feedback"></div>
 
                   <div class="modal-footer">
                     <button
-                      @click.prevent="proceedAction()"
+                      @click.prevent="uploadTestScores()"
                       type="submit"
                       class="btn btn-primary submit-button"
                     >Upload</button>
@@ -445,45 +445,249 @@
             </div>
           </div>
         </div>
-        <button
-          type="button"
-          class="btn btn-primary clear-button"
-          data-dismiss="modal"
-        >Publish Coursework</button>
+        <div class="modal fade" id="quizScoresModal" role="dialog">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                  <i class="fas fa-plus"></i> Upload Scores
+                </h4>
+              </div>
+              <form>
+                <div class="form-group">
+                  <div class="modal-body">
+                    <h4>Insert .xls or .xlsx file to upload scores</h4>
+                  </div>
+                  <div class="file-input">
+                    <input
+                      required
+                      type="file"
+                      class="form-control"
+                      :class="{ ' is-invalid' : error.message }"
+                      id="input-file-import"
+                      name="file_import"
+                      ref="import_file"
+                      @change="onFileChange"
+                    />
+                  </div>
+                  <div v-if="error.message" class="invalid-feedback"></div>
+
+                  <div class="modal-footer">
+                    <button
+                      @click.prevent="uploadQuizScores()"
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                    >Upload</button>
+                    <button
+                      type="button"
+                      class="btn btn-danger clear-button"
+                      data-dismiss="modal"
+                    >Clear</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="assignmentScoresModal" role="dialog">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                  <i class="fas fa-plus"></i> Upload Scores
+                </h4>
+              </div>
+              <form>
+                <div class="form-group">
+                  <div class="modal-body">
+                    <h4>Insert .xls or .xlsx file to upload scores</h4>
+                  </div>
+                  <div class="file-input">
+                    <input
+                      required
+                      type="file"
+                      class="form-control"
+                      :class="{ ' is-invalid' : error.message }"
+                      id="input-file-import"
+                      name="file_import"
+                      ref="import_file"
+                      @change="onFileChange"
+                    />
+                  </div>
+                  <div v-if="error.message" class="invalid-feedback"></div>
+
+                  <div class="modal-footer">
+                    <button
+                      @click.prevent="uploadAssignmentScores()"
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                    >Upload</button>
+                    <button
+                      type="button"
+                      class="btn btn-danger clear-button"
+                      data-dismiss="modal"
+                    >Clear</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="practicalScoresModal" role="dialog">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                  <i class="fas fa-plus"></i> Upload Scores
+                </h4>
+              </div>
+              <form>
+                <div class="form-group">
+                  <div class="modal-body">
+                    <h4>Insert .xls or .xlsx file to upload scores</h4>
+                  </div>
+                  <div class="file-input">
+                    <input
+                      required
+                      type="file"
+                      class="form-control"
+                      :class="{ ' is-invalid' : error.message }"
+                      id="input-file-import"
+                      name="file_import"
+                      ref="import_file"
+                      @change="onFileChange"
+                    />
+                  </div>
+                  <div v-if="error.message" class="invalid-feedback"></div>
+
+                  <div class="modal-footer">
+                    <button
+                      @click.prevent="uploadPracticalScores()"
+                      type="submit"
+                      class="btn btn-primary submit-button"
+                    >Upload</button>
+                    <button
+                      type="button"
+                      class="btn btn-danger clear-button"
+                      data-dismiss="modal"
+                    >Clear</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <button @click="meth()" type="button" class="btn btn-primary clear-button">Publish Coursework</button>
       </div>
     </div>
     <div class="container">
       <hr style="height:5 px; width:100%; " />
-      <table class="table table-striped">
+      <table class="table table-striped" id="co" style="visibility:hidden">
         <thead class="thead-dark">
           <tr>
             <th>#</th>
             <th>Registration Number</th>
-            <th>Test 01</th>
-            <th>Quiz</th>
-            <th>Assignment</th>
-            <th>Test 02</th>
-            <th>Coursework/40</th>
+            <th v-for="(test, i) in thisTest" :key="i">
+              {{test.title}}/
+              <span>{{test.weight}}</span>
+            </th>
+            <th v-for="(quiz, i) in thisQuiz" :key="i">
+              {{quiz.title}}/
+              <span>{{quiz.weight}}</span>
+            </th>
+            <th v-for="(assignment, i) in thisAssignment" :key="i">
+              {{assignment.title}}/
+              <span>{{assignment.weight}}</span>
+            </th>
+            <th v-for="(practical, i) in thisPractical" :key="i">
+              {{practical.title}}/
+              <span>{{practical.weight}}</span>
+            </th>
+            <th>
+              Coursework/
+              <span>40</span>
+            </th>
+            <th>Remark</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>1</td>
             <td>2017-04-07374</td>
-            <td>12</td>
-            <td>5</td>
-            <td>5</td>
-            <td>5</td>
-            <td>27</td>
+            <td
+              v-for="(test, i) in thisTest"
+              :key="i"
+            >{{testScore[0].scored_marks/test.total_marks*test.weight}}</td>
+            <td
+              v-for="(quiz, i) in thisQuiz"
+              :key="i"
+            >{{quizScore[0].scored_marks/quiz.total_marks*quiz.weight}}</td>
+            <td
+              v-for="(assignment, i) in thisAssignment"
+              :key="i"
+            >{{assignmentScore[0].scored_marks/assignment.total_marks*assignment.weight}}</td>
+            <!-- <td
+              v-for="(practical, i) in thisPractical"
+              :key="i"
+            >{{practicalScore[0].scored_marks/practical.total_marks*practical.weight}}</td>
+            <td>-->
+            <td>
+              <b>{{cw1}}</b>
+            </td>
+            <td>{{this.rem1}}</td>
           </tr>
           <tr>
             <td>2</td>
-            <td>2017-04-07374</td>
-            <td>12</td>
-            <td>5</td>
-            <td>5</td>
-            <td>5</td>
-            <td>27</td>
+            <td>2017-04-07379</td>
+            <td
+              v-for="(test, i) in thisTest"
+              :key="i"
+            >{{testScore[1].scored_marks/test.total_marks*test.weight}}</td>
+            <td
+              v-for="(quiz, i) in thisQuiz"
+              :key="i"
+            >{{quizScore[1].scored_marks/quiz.total_marks*quiz.weight}}</td>
+            <td
+              v-for="(assignment, i) in thisAssignment"
+              :key="i"
+            >{{assignmentScore[1].scored_marks/assignment.total_marks*assignment.weight}}</td>
+            <!-- <td
+              v-for="(practical, i) in thisPractical"
+              :key="i"
+            >{{practicalScore[0].scored_marks/practical.total_marks*practical.weight}}</td>
+            <td>-->
+            <td>
+              <b>{{cw2}}</b>
+            </td>
+            <td>{{this.rem2}}</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>2017-04-07355</td>
+            <td
+              v-for="(test, i) in thisTest"
+              :key="i"
+            >{{testScore[2].scored_marks/test.total_marks*test.weight}}</td>
+            <td
+              v-for="(quiz, i) in thisQuiz"
+              :key="i"
+            >{{quizScore[2].scored_marks/quiz.total_marks*quiz.weight}}</td>
+            <td
+              v-for="(assignment, i) in thisAssignment"
+              :key="i"
+            >{{assignmentScore[2].scored_marks/assignment.total_marks*assignment.weight}}</td>
+            <!-- <td
+              v-for="(practical, i) in thisPractical"
+              :key="i"
+            >{{practicalScore[0].scored_marks/practical.total_marks*practical.weight}}</td>
+            <td>-->
+            <td>
+              <b>{{cw3}}</b>
+            </td>
+            <td>{{this.rem3}}</td>
           </tr>
         </tbody>
       </table>
@@ -580,41 +784,150 @@ th {
 
 <script>
 import { ApiService } from "@/services/api.service.js";
-// import axios from "axios";
+import axios from "axios";
 import router from "../router/index";
 
 export default {
   data() {
     return {
       error: {},
-
       thisCourse: {},
+      cw1: null,
+      rem1: "",
+      cw2: null,
+      rem2: "",
+      cw3: null,
+      rem3: "",
+      thisTest: [],
+      testScore: [],
+      thisQuiz: [],
+      quizScore: [],
+      thisAssignment: [],
+      assignmentScore: [],
+      thisPractical: [],
+      practicalScore: [],
+      import_file: "",
+      scorableId: null,
       form: {
         title: "",
         weight: null,
         total_marks: null,
-        import_file: "",
       },
-      testId: null,
     };
   },
+   mounted() {
+    this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
+
+    const { course } = router.currentRoute.params;
+    this.thisCourse = course;
+
+    this.thisCourse.tests.forEach((test) => {
+      this.thisTest.push(test);
+
+      test.scores.forEach((score) => {
+        this.testScore.push(score);
+      });
+    });
+    console.log(this.practicalScore);
+
+    this.thisCourse.practicals.forEach((practical) => {
+      this.thisPractical.push(practical);
+
+      practical.scores.forEach((score) => {
+        this.practicalScore.push(score);
+      });
+    });
+    console.log(this.quizScore);
+    this.thisCourse.quizzes.forEach((quiz) => {
+      this.thisQuiz.push(quiz);
+
+      quiz.scores.forEach((score) => {
+        this.quizScore.push(score);
+      });
+    });
+    console.log(this.assignmentScore);
+
+    this.thisCourse.assignments.forEach((assignment) => {
+      this.thisAssignment.push(assignment);
+
+      assignment.scores.forEach((score) => {
+        this.assignmentScore.push(score);
+      });
+    });
+
+    console.log(this.thisAssignment[0].total_marks);
+    console.log("hjkk");
+
+    this.cwa();
+    this.cwb();
+    this.cwc();
+  },
   methods: {
+    meth(){
+      const el=document.getElementById('co')
+      el.style.visibility='visible'
+
+      console.log(el)
+    },
     onFileChange(e) {
       this.import_file = e.target.files[0];
       console.log(this.import_file);
     },
-    addTestToModal(selectedId) {
-      this.testId = selectedId;
+    addToModal(selectedId) {
+      this.scorableId = selectedId;
       console.log(selectedId);
     },
-    proceedAction() {
-      const fd = new FormData();
-      console.log(this.testId);
-      fd.append("import_file", this.form.import_file);
-      ApiService.post(`testScore/${this.testId}`, fd)
+    uploadTestScores() {
+      const fd1 = new FormData();
+      console.log(this.scorableId);
+      fd1.append("import_file", this.import_file);
+      ApiService.post(`testScore/${this.scorableId}`, fd1)
         .then((response) => {
           console.log(response.data);
-          alert("Scores uploaded successfully");
+          alert("Test Scores uploaded successfully");
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    uploadQuizScores() {
+      const fd2 = new FormData();
+      console.log(this.scorableId);
+      fd2.append("import_file", this.import_file);
+      axios
+        .post(`quizScore/${this.scorableId}`, fd2)
+        .then((response) => {
+          console.log(response.data);
+          alert("Quiz Scores uploaded successfully");
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    uploadAssignmentScores() {
+      const fd3 = new FormData();
+      console.log(this.scorableId);
+      fd3.append("import_file", this.import_file);
+      ApiService.post(`assignmentScore/${this.scorableId}`, fd3)
+        .then((response) => {
+          console.log(response.data);
+          alert("Assignment Scores uploaded successfully");
+          location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    uploadPracticalScores() {
+      const fd4 = new FormData();
+      console.log(this.scorableId);
+      fd4.append("import_file", this.import_file);
+      ApiService.post(`practicalScore/${this.scorableId}`, fd4)
+        .then((response) => {
+          console.log(response.data);
+          alert("Practical Scores uploaded successfully");
           location.reload();
         })
         .catch((e) => {
@@ -683,14 +996,60 @@ export default {
           console.log(e);
         });
     },
-  },
-  mounted() {
-    this.thisUser = JSON.parse(localStorage.getItem("auth_user"));
 
-    const { course } = router.currentRoute.params;
-    this.thisCourse = course;
+    cwa() {
+      // this.cw=2
+      this.cw1 =
+        (this.testScore[0].scored_marks / this.thisTest[0].total_marks) *
+          this.thisTest[0].weight +
+        (this.quizScore[0].scored_marks / this.thisQuiz[0].total_marks) *
+          this.thisQuiz[0].weight +
+        (this.testScore[0].scored_marks / this.thisAssignment[0].total_marks) *
+          this.thisAssignment[0].weight;
 
-    console.log(this.thisCourse);
+      // +(this.practicalScore[0].scored_marks /
+      // this.thisPractical[0].total_marks) *
+      // this.thisPractical[0].weight
+
+      if (this.cw1 >= 16) {
+        return (this.rem1 = "Passed");
+      } else return (this.rem1 = "Carry over");
+    },
+    cwb() {
+      this.cw2 =
+        (this.testScore[1].scored_marks / this.thisTest[0].total_marks) *
+          this.thisTest[0].weight +
+        (this.quizScore[1].scored_marks / this.thisQuiz[0].total_marks) *
+          this.thisQuiz[0].weight +
+        (this.testScore[1].scored_marks / this.thisAssignment[0].total_marks) *
+          this.thisAssignment[0].weight;
+
+      // +(this.practicalScore[0].scored_marks /
+      // this.thisPractical[0].total_marks) *
+      // this.thisPractical[0].weight
+
+      if (this.cw2 >= 16) {
+        return (this.rem2 = "Passed");
+      } else return (this.rem2 = "Carry over");
+    },
+    cwc() {
+      this.cw3 =
+        (this.testScore[2].scored_marks / this.thisTest[0].total_marks) *
+          this.thisTest[0].weight +
+        (this.quizScore[2].scored_marks / this.thisQuiz[0].total_marks) *
+          this.thisQuiz[0].weight +
+        (this.testScore[2].scored_marks / this.thisAssignment[0].total_marks) *
+          this.thisAssignment[0].weight;
+
+      // +(this.practicalScore[0].scored_marks /
+      // this.thisPractical[0].total_marks) *
+      // this.thisPractical[0].weight
+
+      if (this.cw3 >= 16) {
+        return (this.rem3 = "Passed");
+      } else return (this.rem3 = "Carry over");
+    },
   },
+ 
 };
 </script>

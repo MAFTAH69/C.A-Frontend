@@ -9,19 +9,19 @@
         <br />
         <table class="table">
           <tr>
-            <th v-for="(test, i) in thisCourse.tests" :key="i">
+            <th v-for="(test, i) in thisTest" :key="i">
               {{test.title}}/
               <span>{{test.weight}}</span>
             </th>
-            <th v-for="(quiz, i) in thisCourse.quizzes" :key="i">
+            <th v-for="(quiz, i) in thisQuiz" :key="i">
               {{quiz.title}}/
               <span>{{quiz.weight}}</span>
             </th>
-            <th v-for="(assignment, i) in thisCourse.assignments" :key="i">
+            <th v-for="(assignment, i) in thisAssignment" :key="i">
               {{assignment.title}}/
               <span>{{assignment.weight}}</span>
             </th>
-            <th v-for="(practical, i) in thisCourse.practicals" :key="i">
+            <th v-for="(practical, i) in thisPractical" :key="i">
               {{practical.title}}/
               <span>{{practical.weight}}</span>
             </th>
@@ -31,14 +31,29 @@
             </th>
             <th>Remark</th>
           </tr>
-          <tr v-for="(test, index) in thisUser.tests" :key="index">
-            <td >het {{test}}</td> 
-             <td>07</td>
-            <td>03</td>
-            <td>06</td> 
-           <td></td> 
-           </tr> 
-          </table> 
+          <tr>
+            <td
+              v-for="(test, i) in thisTest"
+              :key="i"
+            >{{testScore[0].scored_marks/test.total_marks*test.weight}}</td>
+            <td
+              v-for="(quiz, i) in thisQuiz"
+              :key="i"
+            >{{quizScore[0].scored_marks/quiz.total_marks*quiz.weight}}</td>
+            <td
+              v-for="(assignment, i) in thisAssignment"
+              :key="i"
+            >{{assignmentScore[0].scored_marks/assignment.total_marks*assignment.weight}}</td>
+            <td
+              v-for="(practical, i) in thisPractical"
+              :key="i"
+            >{{practicalScore[0].scored_marks/practical.total_marks*practical.weight}}</td>
+            <td>
+              <b>{{cw}}</b>
+            </td>
+            <td>{{this.rem}}</td>
+          </tr>
+        </table>
       </div>
     </div>
     <div class="footer">
@@ -95,7 +110,16 @@ export default {
   data() {
     return {
       thisCourse: {},
-      newCourse:{}
+      cw: null,
+      rem: "",
+      thisTest: [],
+      testScore: [],
+      thisQuiz: [],
+      quizScore: [],
+      thisAssignment: [],
+      assignmentScore: [],
+      thisPractical: [],
+      practicalScore: [],
     };
   },
 
@@ -105,11 +129,72 @@ export default {
     const { course } = router.currentRoute.params;
     this.thisCourse = course;
 
-    console.log(this.thisCourse.tests[0].scores);
+    this.thisCourse.tests.forEach((test) => {
+      this.thisTest.push(test);
 
-    // this.thisCourse.test
-    // if(this.newCourse.id==this.thisCourse.id)
-    // console.log('ni kweli')
+      test.scores.forEach((score) => {
+        if (score.reg_number == this.thisUser.reg_number) {
+          this.testScore.push(score);
+        }
+      });
+    });
+    console.log(this.practicalScore);
+
+    this.thisCourse.practicals.forEach((practical) => {
+      this.thisPractical.push(practical);
+
+      practical.scores.forEach((score) => {
+        if (score.reg_number == this.thisUser.reg_number) {
+          this.practicalScore.push(score);
+        }
+      });
+    });
+    console.log(this.quizScore);
+    this.thisCourse.quizzes.forEach((quiz) => {
+      this.thisQuiz.push(quiz);
+
+      quiz.scores.forEach((score) => {
+        if (score.reg_number == this.thisUser.reg_number) {
+          this.quizScore.push(score);
+        }
+      });
+    });
+    console.log(this.assignmentScore);
+
+    this.thisCourse.assignments.forEach((assignment) => {
+      this.thisAssignment.push(assignment);
+
+      assignment.scores.forEach((score) => {
+        if (score.reg_number == this.thisUser.reg_number) {
+          this.assignmentScore.push(score);
+        }
+      });
+    });
+
+    console.log(this.thisAssignment[0].total_marks);
+    console.log("hjkk");
+
+    this.cws();
+  },
+  methods: {
+    cws() {
+      // this.cw=2
+      this.cw =
+        (this.testScore[0].scored_marks / this.thisTest[0].total_marks) *
+          this.thisTest[0].weight +
+        (this.quizScore[0].scored_marks / this.thisQuiz[0].total_marks) *
+          this.thisQuiz[0].weight +
+        (this.testScore[0].scored_marks / this.thisAssignment[0].total_marks) *
+          this.thisAssignment[0].weight;
+
+      // +(this.practicalScore[0].scored_marks /
+      // this.thisPractical[0].total_marks) *
+      // this.thisPractical[0].weight
+
+      if (this.cw >= 16) {
+       return this.rem = "Passed";
+      } else return this.rem = "Carry over";
+    },
   },
 };
 </script>

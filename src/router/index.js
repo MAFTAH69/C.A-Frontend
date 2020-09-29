@@ -8,6 +8,7 @@ import DisplayCoursework from '../views/display_coursework.vue'
 import UploadCoursework from '../views/upload_coursework.vue'
 import Postponement from '../views/postponement.vue'
 import MyPostponement from '../views/my_postponement.vue'
+import IndividualPostponement from '../views/individual_postponement.vue'
 import AllPostponements from '../views/all_postponements.vue'
 import Layout from '@/components/layout/layout.vue'
 import { TokenService } from '../services/storage.service.js'
@@ -19,13 +20,13 @@ const routes = [
     path: '',
     name: 'Layout',
     component: Layout,
-    
+
     children: [
       {
         path: '/',
         component: Login,
         meta: {
-          public: true, 
+          public: true,
           onlyWhenLoggedOut: true
         }
       },
@@ -57,6 +58,11 @@ const routes = [
         path: '/my_postponement',
         name: 'MyPostponement',
         component: MyPostponement
+      },
+      {
+        path: '/individual_postponement',
+        name: 'IndividualPostponement',
+        component: IndividualPostponement
       }, {
         path: '/all_postponements',
         name: 'AllPostponements',

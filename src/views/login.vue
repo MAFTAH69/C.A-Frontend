@@ -156,9 +156,10 @@ export default {
       const password = this.form.password;
       if (username.length == 0 || password.length == 0) {
         this.error = true;
-        return;
+        return location.reload;
       }
       this.login(this.form);
+      
     },
   },
 };

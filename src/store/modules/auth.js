@@ -47,7 +47,7 @@ const actions = {
         UserService.logout()
         commit('logoutSuccess')
         router.push({path:'/'})
-        location.reload
+        // location.reload
     }
 
 }

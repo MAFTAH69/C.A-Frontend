@@ -1,5 +1,6 @@
 import { ApiService } from './api.service.js'
 import { TokenService } from './storage.service.js'
+import User from '@/models/user.js'
 // import axios from 'axios'
 
 class AuthenticationError extends Error {
@@ -40,6 +41,8 @@ const UserService = {
                ApiService.setHeaders()
 
                localStorage.setItem('auth_user',JSON.stringify(response.data.user))
+
+               User.insert({ data: response.data.users })
             
                return response.data.access_token
 
